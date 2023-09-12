@@ -4,6 +4,14 @@ const userId = document.getElementById(`user_id`);
 const signin = document.getElementById(`signin`);
 const exit = document.getElementById(`exit`);
 
+function checkAuth() {
+    const storedUserId = localStorage.getItem(`userId`);
+    if (storedUserId) {
+        signin.classList.remove(`signin_active`);
+        welcome.classList.add(`welcome_active`);
+        userId.innerHTML = storedUserId;
+    }
+}
 
 function auth() {
     signinForm.addEventListener(`submit`, (e) => {
@@ -14,21 +22,16 @@ function auth() {
         xhr.responseType = `json`;
         xhr.send(formData);
         xhr.addEventListener(`load`, () => {
-            if(xhr.status === 200) {
-                let data = xhr.response;
-                if (data.success) {
-                    signin.classList.remove(`signin_active`);
-                    welcome.classList.add(`welcome_active`);
-                    localStorage.setItem(`userId`, data.user_id);
-                    userId.innerHTML = localStorage.getItem(`userId`);
-                } else {
-                    alert(`Неверный логин/пароль`);
-                    signinForm.reset();
-                }
+            let data = xhr.response;
+            if (data.success) {
+                signin.classList.remove(`signin_active`);
+                welcome.classList.add(`welcome_active`);
+                localStorage.setItem(`userId`, data.user_id);
+                userId.innerHTML = localStorage.getItem(`userId`);
             } else {
-                alert(`Ошибка: ` + xhr.status);
+                alert(`Неверный логин/пароль`);
                 signinForm.reset();
-            }
+                }
             });
         });
 };
