@@ -7,8 +7,8 @@ textEditor.addEventListener(`input`, () => {
 })
 
 clearButton.addEventListener(`click`, () => {
-    editor.value = '';
-    localStorage.clear();
+    editor.value = ``;
+    localStorage.removeItem();
   });
   
 editor.value = localStorage.getItem(`editorValue`);
